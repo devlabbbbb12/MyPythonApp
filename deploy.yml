@@ -1,0 +1,46 @@
+name: Deploy EDA.py Application
+
+# Trigger the workflow on push to the main branch
+on:
+  push:
+    branches:
+      - main  # or replace with your default branch name
+
+# Define the job
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Runs the job on the latest version of Ubuntu
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2  # Checkout the repo so the workflow can access it
+
+    - name: Set up Python
+      uses: actions/setup-python@v2  # Set up a Python environment
+      with:
+        python-version: '3.x'  # Specify the version of Python (e.g., 3.8)
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip  # Ensure pip is up-to-date
+        pip install -r requirements.txt     # Install the dependencies from requirements.txt
+
+    - name: Run EDA script
+      run: |
+        python EDA.py  # Run your EDA script here (replace with the actual path if necessary)
+
+    - name: Commit changes (optional)
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add .
+        git commit -m "Automated update from GitHub Actions" || echo "No changes to commit"
+        git push
+
+    - name: Deployment (example)
+      run: |
+        # This is an example deployment step.
+        # Replace it with the actual deployment commands you need.
+        # e.g., scp, rsync, AWS CLI, Heroku CLI, etc.
+        echo "Deploying EDA.py app..."
+        # Replace with actual deployment commands here
